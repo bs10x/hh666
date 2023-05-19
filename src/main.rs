@@ -21,9 +21,16 @@ fn img_generator(txt2dcrypt: &str, s2p_map: &HashMap<char, Vec<char>>) {
     let mut image = ImageBuffer::<Rgba<u8>, _>::new(width, height);
 
     for (index, icon_index) in (0..).zip((0..txt2dcrypt.len()).step_by(6)) {
+        if index >= grid_size {
+            panic!("Too many icons to fit within the image buffer.");
+        }
+
         let icon = &txt2dcrypt[icon_index..icon_index + 6];
-        let x = (index % grid_size) * icon_width;
-        let y = (index / grid_size) * icon_height;
+        let row = index / 10;
+        let col = index % 10;
+
+        let x = col * icon_width;
+        let y = row * icon_height;
 
         for (i, c) in icon.chars().enumerate() {
             let icon_color = match c {
@@ -49,10 +56,15 @@ fn img_generator(txt2dcrypt: &str, s2p_map: &HashMap<char, Vec<char>>) {
         }
     }
 
+    if txt2dcrypt.len() > grid_size * 6 {
+        panic!("Too many icons to fit within the image buffer.");
+    }
+
     let timestamp = Local::now().format("%y%m%d%H%M%S");
     let filename = format!("{}.png", timestamp);
     image.save(&filename).expect("Failed to save image");
 }
+
 
 
 
@@ -129,7 +141,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let k_hash = Sha3_256::digest(k.as_bytes());
 
     //[DBG]//   print "k_hash"
-    println!("k_hash: {:x}", k_hash);
+    //println!("k_hash: {:x}", k_hash);
 
     //  use "k_hash" as seed for the PRNG
     let seed: [u8; 32] = k_hash[..32].try_into()?;
