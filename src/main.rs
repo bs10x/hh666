@@ -5,9 +5,56 @@ use std::collections::HashSet;
 use std::io::{self, Write};
 use std::collections::HashMap;
 use clap::Parser;
+use image::{ImageBuffer, Rgba};
+use chrono::prelude::*;
+
+// generate the image
+fn img_generator(txt2dcrypt: &str, s2p_map: &HashMap<char, Vec<char>>) {
+    let width = 2000;
+    let height = 3000;
+    let icon_width = 200;
+    let icon_height = 300;
+    let grid_size = 100;
+
+    let mut image = ImageBuffer::<Rgba<u8>, _>::new(width, height);
+
+    for (index, icon_index) in (0..).zip((0..txt2dcrypt.len()).step_by(6)) {
+        let icon = &txt2dcrypt[icon_index..icon_index + 6];
+        let x = (index % grid_size) * icon_width;
+        let y = (index / grid_size) * icon_height;
+
+        for (i, c) in icon.chars().enumerate() {
+            let icon_color = match c {
+                'c' => Rgba([0, 255, 255, 255]),    // cyan
+                'y' => Rgba([255, 255, 0, 255]),    // yellow
+                'm' => Rgba([255, 0, 255, 255]),    // magenta
+                'r' => Rgba([255, 0, 0, 255]),      // red
+                'g' => Rgba([0, 255, 0, 255]),      // green
+                'b' => Rgba([0, 0, 255, 255]),      // blue
+                _ => panic!("Invalid icon character"),
+            };
+
+            let icon_x = x + (i % 2) * (icon_width / 2);
+            let icon_y = y + (i / 2) * (icon_height / 3);
+
+            for y_offset in 0..(icon_height / 3) {
+                for x_offset in 0..(icon_width / 2) {
+                    let px = icon_x + x_offset;
+                    let py = icon_y + y_offset;
+                    image.put_pixel(px as u32, py as u32, icon_color);
+                }
+            }
+        }
+    }
+
+    let timestamp = Local::now().format("%y%m%d%H%M%S");
+    let filename = format!("{}.png", timestamp);
+    image.save(&filename).expect("Failed to save image");
+}
 
 
-// generate all 720 permutations of 'chars', using backtracking
+
+// generate all 720 permutations of 'chars'
 fn permutation_generator(chars: &[char], used: &mut HashSet<char>, permutor: &mut Vec<char>, permutations: &mut Vec<Vec<char>>) {
     if permutor.len() == chars.len() {
         permutations.push(permutor.clone());
@@ -106,11 +153,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     //}
 
     // create a hashmap to store p_pr_101 as values with s_101 as keys
-    let mut s2p_map = HashMap::new();
+    let mut s2p_map: HashMap<char, Vec<char>> = HashMap::new();
 
     // iterate through the symbols and assign a selected permutation to each one
     for (symbol, permutation) in symbols.iter().zip(selection.iter()) {
-    s2p_map.insert(symbol, permutation);
+    s2p_map.insert(*symbol, permutation.to_owned());
     }
 
     //[DBG]// print the resulting hashmap "s2p_map"
@@ -145,6 +192,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     // print "txt2dcrypt"
     println!("txt2dcrypt: {}", txt2dcrypt);
+
+    img_generator(&txt2dcrypt, &s2p_map);
 
 Ok(())
 }
