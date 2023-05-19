@@ -9,8 +9,6 @@ use image::{ImageBuffer, Rgba};
 use chrono::prelude::*;
 
 //  function to generate the icon image  
-//TODO//    icon at index 10n+1 causes thread panic due to image buffer dimension overflow
-//TODO//    because no implementation of wrapping around to the next row
 fn img_generator(txt2dcrypt: &str, s2p_map: &HashMap<char, Vec<char>>) {
     let width = 2000;
     let height = 3000;
