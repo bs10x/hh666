@@ -206,11 +206,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     //  print "txt2dcrypt"
     println!("txt2dcrypt: {}", txt2dcrypt);
 
-    //  call 'img_generator' with 'txt2dcrypt' to create icon image 'img2dcrypt' and save it 
+    //  call "img_generator" with "txt2dcrypt" to create icon image "img2dcrypt" and save it 
     img_generator(&txt2dcrypt, &s2p_map);
 
 Ok(())
 }
-
-//Z85
-//f!j$wgcoR9x!r!ng&9
