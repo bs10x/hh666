@@ -34,7 +34,7 @@ fn img_generator(txt2dcrypt: &str, s2p_map: &HashMap<char, Vec<char>>) {
 
         for (i, c) in icon.chars().enumerate() {
             let icon_color = match c {
-                '0' => Rgba([0, 0, 0, 0]),          // 0
+                '0' => Rgba([0, 0, 0, 255]),          // 0
                 '1' => Rgba([255, 255, 255, 255]),  // 1
                 _ => panic!("Invalid icon character"),
             };
@@ -64,34 +64,28 @@ fn img_generator(txt2dcrypt: &str, s2p_map: &HashMap<char, Vec<char>>) {
 
 
 //  generate all 65 combinations of 'chars'
-fn combination_generator(symbols: &[char], length: usize) -> Vec<Vec<char>> {
-    if length == 0 {
-        return vec![Vec::new()];
-    }
-
+fn generate_combinations() -> Vec<String> {
+    let characters = vec!['0', '1'];
     let mut combinations = Vec::new();
 
-    combinator(symbols, length, &mut Vec::new(), &mut combinations);
+    for c1 in &characters {
+        for c2 in &characters {
+            for c3 in &characters {
+                for c4 in &characters {
+                    for c5 in &characters {
+                        for c6 in &characters {
+                            let combination = format!("{}{}{}{}{}{}", c1, c2, c3, c4, c5, c6);
+                            combinations.push(combination);
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     combinations
 }
 
-fn combinator(
-    symbols: &[char],
-    length: usize,
-    combination: &mut Vec<char>,
-    combinations: &mut Vec<Vec<char>>,) {
-    if length == 0 {
-        combinations.push(combination.clone());
-        return;
-    }
-
-    for symbol in symbols {
-        combination.push(*symbol);
-        combinator(symbols, length - 1, combination, combinations);
-        combination.pop();
-    }
-}
 
 
 
@@ -139,11 +133,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
 
     //  generate all 65 combinations of "chars" -> "combinations"
-    let chars = ['0', '1'];
-    let mut used = HashSet::new();
-    let mut combinator = Vec::new();
-    let mut combinations = Vec::new();
-    combination_generator(&chars, &mut used, &mut combinator, &mut combinations);
+    let mut combinations = generate_combinations();
+
 
     //  shuffle the 65 combinations in "combinations" using the PRNG -> "p_pr_65"
     combinations.shuffle(&mut prng);
@@ -151,7 +142,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     //[DBG]//   print the 65 pseudorandom selected elements "p_pr_65"
     println!("p_pr_65: ");
     for p in &combinations {
-        println!("{}", p.iter().collect::<String>());
+        println!("{}", p.chars().collect::<String>());
     }
 
     //  create a hashmap to store p_pr_65 as values with s_65 as keys
@@ -159,7 +150,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     //  iterate through the symbols and assign a selected combination to each one
     for (symbol, combination) in symbols.iter().zip(combinations.iter()) {
-    s2p_map.insert(*symbol, combination.to_owned());
+        let combination_chars: Vec<char> = combination.chars().collect();
+        s2p_map.insert(*symbol, combination_chars);
     }
 
     //[DBG]// print the resulting hashmap "s2p_map"
@@ -189,7 +181,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     //  encrypt "txt2ncrypt" using "s2p_map"
     let txt2dcrypt = txt2ncrypt.chars()
     .map(|c| {
-        s2p_map.get(&c).map(|combination| combination.iter().collect::<String>()).unwrap_or("-".to_string())
+        s2p_map.get(&c).map(|combination| combination.iter().collect::<String>()).unwrap_or("".to_string())
     })
     .collect::<String>();
 
