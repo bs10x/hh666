@@ -140,10 +140,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     combinations.shuffle(&mut prng);
 
     //[DBG]//   print the 65 pseudorandom selected elements "p_pr_65"
-    println!("p_pr_65: ");
-    for p in &combinations {
-        println!("{}", p.chars().collect::<String>());
-    }
+    //println!("p_pr_65: ");
+    //for p in &combinations {
+    //    println!("{}", p.chars().collect::<String>());
+    //}
 
     //  create a hashmap to store p_pr_65 as values with s_65 as keys
     let mut s2p_map: HashMap<char, Vec<char>> = HashMap::new();
@@ -162,20 +162,27 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
 
 
-
-
-
-
-
-    
-
-
-
-    //  read "txt2ncrypt"
+    // Read "txt2ncrypt" and validate if it contains only symbols from the symbols vector
     let mut txt2ncrypt = String::new();
-    print!("txt2ncrypt: ");
-    io::stdout().flush().unwrap();
-    io::stdin().read_line(&mut txt2ncrypt)?;
+    loop {
+        print!("txt2ncrypt: ");
+        io::stdout().flush().unwrap();
+        io::stdin().read_line(&mut txt2ncrypt)?;
+
+        let txt2ncrypt_chars: HashSet<char> = txt2ncrypt.chars().collect();
+        let symbols_set: HashSet<char> = symbols.iter().cloned().collect();
+
+        let mut foreign_chars: HashSet<char> = txt2ncrypt_chars.difference(&symbols_set).cloned().collect();
+        foreign_chars.remove(&'\n');
+
+        if foreign_chars.is_empty() {
+            break;
+        } else {
+            println!("Invalid characters found: {:?}", foreign_chars);
+            txt2ncrypt.clear();
+        }
+    }
+
     
 
     //  encrypt "txt2ncrypt" using "s2p_map"
@@ -188,20 +195,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     //  print "txt2dcrypt"
     println!("txt2dcrypt: {}", txt2dcrypt);
 
-    
-
-
-
-
-
-
-
 
     //  call 'img_generator' with 'txt2dcrypt' to create icon image 'img2dcrypt' and save it 
     img_generator(&txt2dcrypt, &s2p_map);
 
 Ok(())
 }
-
-//Z85
-//f!j$wgcoR9x!r!ng&9
