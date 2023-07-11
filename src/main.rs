@@ -104,22 +104,19 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("parsed_arguments: \n{:?}", args);
 
     //  read UserInputString "k"
-    let k = args
-        .key
-        .map(|s| s.trim_end().to_owned())
-        .unwrap_or_else(|| {
-            println!("please define k!");
-            print!("k: ");
-            io::stdout().flush().unwrap();
-            let mut k = String::new();
-            match io::stdin().read_line(&mut k) {
-                Ok(_) => k.trim_end().to_owned(),
-                Err(err) => {
-                    eprintln!("Error reading UserInputStringKey: {}", err);
-                    std::process::exit(1);
-                }
+    let k = args.key.map(|s| s.trim_end().to_owned()).unwrap_or({
+        println!("please define k!");
+        print!("k: ");
+        io::stdout().flush().unwrap();
+        let mut k = String::new();
+        match io::stdin().read_line(&mut k) {
+            Ok(_) => k.trim_end().to_owned(),
+            Err(err) => {
+                eprintln!("Error reading UserInputStringKey: {}", err);
+                std::process::exit(1);
             }
-        });
+        }
+    });
 
     //  vector of the symbols to map
     let symbols = vec![
@@ -156,10 +153,12 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     selection.shuffle(&mut prng);
 
     //[DBG]//   print the 101 pseudorandom selected elements "p_pr_101"
-    //println!("p_pr_101: ");
-    //for p in &selection {
-    //    println!("{}", p.iter().collect::<String>());
-    //}
+    /*
+    println!("p_pr_101: ");
+    for p in &selection {
+       println!("{}", p.iter().collect::<String>());
+    }
+    */
 
     //  create a hashmap to store p_pr_101 as values with s_101 as keys
     let mut s2p_map: HashMap<char, Vec<char>> = HashMap::new();
@@ -169,11 +168,13 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         s2p_map.insert(*symbol, permutation.to_owned());
     }
 
-    //[DBG]// print the resulting hashmap "s2p_map"
-    //println!("s2p_map:");
-    //for (symbol, permutation) in s2p_map.iter() {
-    //    println!("{}: {}", symbol, permutation.iter().collect::<String>());
-    //}
+    //[DBG]//   print the resulting hashmap "s2p_map"
+    /*
+    println!("s2p_map:");
+    for (symbol, permutation) in s2p_map.iter() {
+        println!("{}: {}", symbol, permutation.iter().collect::<String>());
+    }
+    */
 
     //  read "txt2ncrypt"
     let txt2ncrypt = args
