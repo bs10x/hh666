@@ -8,6 +8,7 @@ use std::collections::HashMap;
 use std::collections::HashSet;
 use std::io::{self, Write};
 
+
 //  function to generate the icon image
 fn img_generator(txt2dcrypt: &str) {
     let width = 2000;
