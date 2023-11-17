@@ -1,0 +1,89 @@
+mod CRYPT
+    handles:
+        encryption of input string with input key to meta ciphertext
+        decryption of input image with input key to meta plaintext
+
+mod IMG
+    handles:
+        generation of image from input string
+        generation of string from input image
+
+mod CLI
+
+mod UTIL
+
+
+
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+hh666
+->
+blabla
+help menu:
+    options:
+        -i, --input                     ["INPUT STRING"], [INPUT_TEXT_FILE_PATH], [INPUT_IMAGE_FILE_PATH], []
+        -o, --output                    ["OUTPUT FILENAME"], [OUTPUT_FILE_PATH], []
+        -m, --mode                      [n], [d], [k] [hexahue]
+        -k, --key                       ["KEY STRING"], [KEY_FILE_PATH], []
+        -h, --help
+        -v, --version
+
+-i, --input:
+    takes:
+        ["INPUT STRING"]                some input string -> infers -m [n]
+        [INPUT_TEXT_FILE_PATH]          input text file path -> infers -m [n]
+        [INPUT_IMAGE_FILE_PATH]         input image file path -> infers -m [d]
+        []                              nothing, read from stdin, if --key is defined start live session
+        
+-o, --output:
+    takes:
+        ["OUTPUT FILENAME"]             output image filename
+        [OUTPUT_FILE_PATH]              output text file path
+        []                              nothing, read from stdin, if empty current datetime will be used as output image filename in current directory
+
+-m, --mode
+    takes:
+        [n]                             encrypt mode, transform from text to image
+        [d]                             decryption mode, transform from image to text
+        [k]                             key generation mode, 
+
+-k, --key
+    takes:
+        ["KEY STRING"]                  some key string
+        [KEY_FILE_PATH]                 key file path -> check for text file, else use raw bytes as hexahue
+
+
+
+
+hh666 -io
+
+
+
+
+
+
+
+
+
+hh666 -i "hello world" -k "abc1"
+
+->
+
+
+
+
+
+hh666 -i "hello world" -o "output.png" -k "abc1"
+
+
+->
