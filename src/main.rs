@@ -7,6 +7,7 @@ use sha3::{Digest, Sha3_256};
 use std::collections::HashMap;
 use std::collections::HashSet;
 use std::io::{self, Write};
+use std::error::Error;
 
 //  function to generate the icon image
 fn img_generator(txt2dcrypt: &str, _s2p_map: &HashMap<char, Vec<char>>) {
@@ -98,7 +99,7 @@ struct Args {
     input: Option<String>,
 }
 
-fn main() -> Result<(), Box<dyn std::error::Error>> {
+fn main() -> Result<(), Box<dyn Error>> {
     //??//  initializing clap_parser or smthng, idfk
     let args = Args::parse();
     println!("parsed_arguments: \n{:?}", args);
