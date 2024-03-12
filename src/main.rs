@@ -21,7 +21,7 @@ fn img_generator(txt2dcrypt: &str) {
 
     for (index, icon_index) in (0..).zip((0..txt2dcrypt.len()).step_by(6)) {
         if index >= grid_size {
-            panic!("Too many icons to fit within the image buffer.");
+            panic!("Too many icons ({}) to fit within the image buffer.", txt2dcrypt.len());
         }
 
         let icon = &txt2dcrypt[icon_index..icon_index + 6];
