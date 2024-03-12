@@ -21,7 +21,7 @@ fn img_generator(txt2dcrypt: &str, s2p_map: &HashMap<char, Vec<char>>) {
 
     for (index, icon_index) in (0..).zip((0..txt2dcrypt.len()).step_by(6)) {
         if index >= grid_size {
-            panic!("Too many icons to fit in the image buffer.");
+            panic!("Too many icons ({}) to fit within the image buffer.", txt2dcrypt.len());
         }
 
         let slice_end = std::cmp::min(icon_index + 6, txt2dcrypt.len());
