@@ -1,0 +1,17 @@
+## v1 ###########
+
+rune = 6!
+| rune |    =        720
+
+
+## v2 ###########
+
+bg_color = 0 .. 16
+ascii = 0 .. 255
+
+cell = bg_color x fg_color x ascii
+
+| 1cell |   =          65'536
+| 2cell |   =   4'294'967'296
+| U     |   =       1'112'064
+--> we good
