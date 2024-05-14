@@ -9,8 +9,8 @@ for _ in range(17000):
     # Choose a random background color
     bg_color = random.choice(bg_colors)
     
-    # Choose a random foreground color that is not the same as the background color
-    fg_color = random.choice([color for color in fg_colors if color % 10 != bg_color % 10])
+    # Choose a random foreground color that is not the same as the background color #  if color % 10 != bg_color % 10 #
+    fg_color = random.choice([color for color in fg_colors])
     
     # Choose a random ASCII character that is printable and not a space or a tab
     char = random.choice([chr(i) for i in range(33, 127) if i != 32 and i != 9])

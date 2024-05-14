@@ -11,7 +11,17 @@ ascii = 0 .. 255
 
 cell = bg_color x fg_color x ascii
 
-| 1cell |   =          65'536
-| 2cell |   =   4'294'967'296
-| U     |   =       1'112'064
+
+
+no_fg 16'777'216
+
+
+| X  |   =          65'536
+| XX |   =   4'294'967'296
+| U8 | =         2,164,864  # utf-8
+| U+ |   =       1'112'064  # unicode
 --> we good
+
+
+Hallo liebe Sophie ich habe dich ganz ferst gern
+
