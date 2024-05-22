@@ -7,8 +7,18 @@ use std::io::{self, Write};
 use std::collections::HashMap;
 use clap::Parser;
 use image::{ImageBuffer, Rgba};
+<<<<<<< Updated upstream
 use chrono::prelude::*;
 =======
+use std::error::Error;
+use std::io::{self, Write};
+>>>>>>> Stashed changes
+=======
+use rand::rngs::StdRng;
+use rand::{seq::SliceRandom, SeedableRng};
+use sha3::{Digest, Sha3_256};
+use std::collections::HashMap;
+use std::collections::HashSet;
 use std::error::Error;
 use std::io::{self, Write};
 >>>>>>> Stashed changes
