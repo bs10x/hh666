@@ -6,8 +6,8 @@ use rand::{seq::SliceRandom, SeedableRng};
 use sha3::{Digest, Sha3_256};
 use std::collections::HashMap;
 use std::collections::HashSet;
-use std::io::{self, Write};
 use std::error::Error;
+use std::io::{self, Write};
 
 //  function to generate the icon image
 fn img_generator(txt2dcrypt: &str, _s2p_map: &HashMap<char, Vec<char>>) {
@@ -132,7 +132,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     //  hash input string "k" w/ SHA3-256
     let k_hash = Sha3_256::digest(k.as_bytes());
 
-    //[DBG]//   print "k_hash"
+    // debug
     //println!("k_hash: {:x}", k_hash);
 
     //  use "k_hash" as seed for the PRNG
