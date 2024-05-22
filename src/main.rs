@@ -2,11 +2,16 @@ use rand::{seq::SliceRandom, SeedableRng};
 use rand::rngs::StdRng;
 use sha3::{Digest, Sha3_256};
 use std::collections::HashSet;
+<<<<<<< Updated upstream
 use std::io::{self, Write};
 use std::collections::HashMap;
 use clap::Parser;
 use image::{ImageBuffer, Rgba};
 use chrono::prelude::*;
+=======
+use std::error::Error;
+use std::io::{self, Write};
+>>>>>>> Stashed changes
 
 
 //  function to generate icon image 'yymmddHMS.png' with 'txt2ncrypt' and 's2p_map'
@@ -116,7 +121,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     //  hash input string "k" w/ SHA3-256
     let k_hash = Sha3_256::digest(k.as_bytes());
 
-    //[DBG]//   print "k_hash"
+    // debug
     //println!("k_hash: {:x}", k_hash);
 
     //  use "k_hash" as seed for the PRNG
